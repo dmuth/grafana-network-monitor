@@ -1,5 +1,5 @@
 
-# Grafana Playground
+# Grafana Network Monitor
 <a href="./img/ping-results-loki-top.png"><img src="./img/ping-results-loki-top.png" align="right" width="300" /></a>
 
 This project is an offshoot of my [Grafana Playground app](https://github.com/dmuth/grafana-playground)
@@ -154,9 +154,9 @@ A: It was a judgement call, I felt that if I was pinging say, 10 different hosts
 
 #### Q: I see you're getting packet loss stats every 10 seconds.  What about the overhead in stopping and starting a `ping` process every 10 seconds?
 
-A: That's not an issue, because I don't do that. :-)  Instead, [I hacked the ping utility](https://github.com/dmuth/iputils), and added in some code to print out the number of packets sent/received every 10 seconds.  [My script that parses those values](docker/ping-metrics/python-prometheus-metrics.py) then computes a packet loss value, and exports it to Prometheus. (For Loki, the packet loss is computed at query time with LogQL)
+A: That's not an issue, because I don't do that. :-)  Instead, [I hacked the ping utility](https://github.com/dmuth/iputils), and added in some code to print out the number of packets sent/received every 10 seconds.  I used this technique before for [my Splunk network health app](https://github.com/dmuth/splunk-network-health-check) and it works quite well.
 
-I used this technique before for [my Splunk network health app](https://github.com/dmuth/splunk-network-health-check) and it works quite well.
+A2: The previous answer was back from when I was sending my logs to Prometheus, the ingestion script I used competed a packet loss value.  Now that I'm sending my logs to Loki instead, my Loki query itself creates the packet loss value and all the raw data for each packet is logged.
 
 
 ## Development
