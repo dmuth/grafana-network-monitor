@@ -34,7 +34,6 @@ ingester:
     min_ready_duration: 5s
   #chunk_idle_period: 1h       # Any chunk not receiving new logs in this time will be flushed
   #max_chunk_age: 1h           # All chunks will be flushed when they hit this age, default is 1h
-# TEST
   chunk_idle_period: 5m
   max_chunk_age: 5m
   chunk_target_size: 1048576  # Loki will attempt to build chunks up to 1.5MB, flushing first if chunk_idle_period or max_chunk_age is reached first
@@ -56,7 +55,6 @@ storage_config:
     active_index_directory: /tmp/loki/boltdb-shipper-active
     cache_location: /tmp/loki/boltdb-shipper-cache
     #cache_ttl: 24h         # Can be increased for faster performance over longer query periods, uses more disk space
-# TEST
     cache_ttl: 1h
     shared_store: filesystem
   filesystem:
