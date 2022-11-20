@@ -1,6 +1,6 @@
 
 # Grafana Network Monitor
-<a href="./img/ping-results-loki-top.png"><img src="./img/ping-results-loki-top.png" align="right" width="300" /></a>
+<a href="./img/ping-results.png"><img src="./img/ping-results.png" align="right" width="300" /></a>
 
 This project is an offshoot of my [Grafana Playground app](https://github.com/dmuth/grafana-playground)
 that is specificlly build around monitoring ICMP connectivity to various hosts on the Internet.
@@ -16,7 +16,7 @@ The major pieces of this project are:
 
 ## Getting Started
 
-<a href="./img/septa-regional-rail.png"><img src="./img/septa-regional-rail.png" align="right" width="300" /></a>
+<a href="./img/ping-results-internal-vs-external.png"><img src="./img/ping-results-internal-vs-external.png" align="right" width="300" /></a>
 
 - `cp hosts.txt.sample hosts.txt` to set up your `hosts.txt` file
 - Run `docker-compose up` to start up the environment.
