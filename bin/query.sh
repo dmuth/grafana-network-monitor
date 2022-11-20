@@ -14,6 +14,8 @@ then
 	echo "! Syntax: $0 query [ limit ] "
 	echo "! "
 	echo "! query - Loki query"
+    echo "! "
+    echo "! This query will show all lines: '{host=~\".+\"}'"
 	echo "! limit - Limit the number of results"
 	echo "! "
 	exit 1
