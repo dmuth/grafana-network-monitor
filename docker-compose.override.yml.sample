@@ -1,0 +1,19 @@
+
+version: "3"
+
+#
+# Be sure to run:
+#
+#		cp docker-compose.override.yml.sample docker-compose.override.yml 
+#
+# ...if you want this file to be used.
+#
+services:
+
+  ping:
+    environment:
+      HOSTS: "google.com amazon.com google-dns-4 google-dns-8 quad9-dns internal-192-168-1-1 internal-10-0-0-1"
+
+
+
+

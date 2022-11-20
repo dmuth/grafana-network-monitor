@@ -1,0 +1,42 @@
+
+# Vim
+*.swp
+*~
+
+# Steve Jobs
+.DS_Store 
+
+#
+# Don't include Promtail's offset tracking files.
+#
+data/promtail/*.yaml
+
+#
+# Don't include Loki's database.
+#
+data/loki-data/
+data/loki-wal/
+
+#
+# Don't include anything from Grafana
+#
+data/grafana
+
+#
+# Don't include Prometheus data
+#
+data/prometheus
+
+#
+# Don't include this, since we want it optional.
+#
+docker-compose.override.yml
+
+# 
+# Don't include hosts.txt, since I expect that users will modify it.
+#
+hosts.txt
+
+
+.vagrant
+

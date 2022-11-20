@@ -1,0 +1,83 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: ./mnt/var/positions-docker.yaml
+
+#
+# Where to send logs.
+#
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+    external_labels:
+      host: docker
+
+#
+# What to read.
+#
+scrape_configs:
+
+- job_name: synthetic
+  static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: logs-synthetic
+        __path__: /logs/synthetic/*.log
+
+  pipeline_stages:
+  - match:
+      selector: '{job="logs-synthetic"}'
+      stages:
+        - regex:
+            expression: '(?P<timestamp>(\w+ \w+ +\d+ \d{2}:\d{2}:\d{2} \w+ \d{4})) (?P<hostname>\w+)' 
+        #
+        # We can uncomment these to have more labels, but be advised that unique streams are based
+        # on labels, and a high cardinality means that we'll get "HTTP 429 Too Many Connections" errors.
+        #
+        # Fewer labels == better performance
+        #
+        #- regex:
+        #    expression: 'count=(?P<count>(\d+))'
+        #- regex:
+        #    expression: 'count2=(?P<count2>(\d+))'
+        #- regex:
+        #    expression: 'count3=(?P<count3>(\d+))'
+        - labels:
+            hostname: hostname
+            #count: count
+            #count2: count2
+            #count3: count3
+            #test_timestamp: timestamp
+        - timestamp:
+            format: UnixDate
+            source: timestamp
+
+
+- job_name: ping
+  static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: logs-ping
+        __path__: /logs/ping/*.log
+
+  pipeline_stages:
+  - match:
+      selector: '{job="logs-ping"}'
+      stages:
+        - regex:
+            expression: '(?P<timestamp>(\d+-\d+-\d+ \d+:\d+:\d+\.\d+))' 
+        - regex:
+            expression: 'target=(?P<target>([^ ]+)) '
+        - labels:
+            target: target
+        - timestamp:
+            source: timestamp
+            #
+            # This is a custom format
+            #
+            format: "2006-01-02 15:04:05.999999999"
+                    
+
