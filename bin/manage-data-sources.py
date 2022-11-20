@@ -112,7 +112,6 @@ def add_data_source(api_url, api_key, name, source_type, target_url, default = F
 def add_data_sources(url, api_key):
 
 	add_data_source(url, api_key, "Loki", "loki", "http://loki:3100", default = True)
-	add_data_source(url, api_key, "Prometheus", "prometheus", "http://prometheus:9090")
 
 
 #
