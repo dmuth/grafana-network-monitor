@@ -97,13 +97,13 @@ def add_data_source(api_url, api_key, name, source_type, target_url, default = F
 
 	r = requests.post(url = url_import, headers = headers, data = json.dumps(data))
 
-	stderr(f"Adding data source {name} with URL {target_url}...")
+	stderr(f"# Adding data source {name} with URL {target_url}...")
 
 	if r.status_code == 409:
-		stderr("That data source already exists, skipping!")
+		stderr("# That data source already exists, skipping!")
 
 	elif r.status_code != 200:
-		raise Exception(f"Status code {r.status_code} != 200 for URL '{url_import}'!  Message returned: {r.text}")
+		raise Exception(f"! Status code {r.status_code} != 200 for URL '{url_import}'!  Message returned: {r.text}")
 
 
 #

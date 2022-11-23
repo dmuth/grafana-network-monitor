@@ -152,7 +152,7 @@ def import_dashboards(url, api_key, dashboards):
 		stderr(f"# Importing dashboard uid={uid} id={id} title={title}...")
 
 		if r.status_code == 404:
-			stderr(f"Dashboard uid {uid} not found, let's create it instead!")
+			stderr(f"! Dashboard uid {uid} not found, let's create it instead!")
 			new_dashboard["overwrite"] = False
 			new_dashboard["dashboard"]["id"] = None
 
@@ -186,7 +186,7 @@ def main():
 
 	elif args.__dict__["import"]:
 		# import is a great term, but a reserved word, hence messing with __dict__...
-		stderr("Now reading JSON of an export file from stdin...")
+		stderr("# Now reading JSON of an export file from stdin...")
 		dashboards = import_json()
 		import_dashboards(url, args.api_key, dashboards)
 

@@ -21,12 +21,10 @@ The major pieces of this project are:
 - `cp hosts.txt.sample hosts.txt` to set up your `hosts.txt` file
 - Run `docker-compose up` to start up the environment.
 - Go to http://localhost:3000/ and log into Grafana with login/pass of `admin/admin`.
-- [Create an API with Admin access](http://localhost:3000/org/apikeys)
+- [Create an API user with Admin access](http://localhost:3000/org/apikeys)
+- Import the dashboards and data source for Loki by running a script within a container
 - Spawn a shell in the `tools` container and import the dashboards and data sources into Grafana
-  - `docker-compose exec -e API_KEY=YOUR_API_KEY tools bash`
-  - `/mnt/bin/manage-data-sources.py --api-key ${API_KEY}`
-  - `cat /mnt/config/dashboards.json | /mnt/bin/manage-dashboards.py --import --api-key ${API_KEY}`
-  - Type `exit` to exit the shell in that container
+  - `docker-compose exec -e API_KEY=YOUR_API_KEY tools /mnt/bin/import.sh`
 - At this point, your Data Source (Loki) and Dashboards have been loaded, with the latter available at http://localhost:3000/dashboards.
 
 
