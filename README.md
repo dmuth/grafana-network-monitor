@@ -63,9 +63,8 @@ Yeah, so you loaded the dashboard, and it's showing the results of pinging multi
 ## Exporting Dashboards
 
 - If you want to export your current set of dashboards (including any changes made) to disk, first you'll need launch a shell in the tools container:
-  - `docker-compose exec tools bash`
+  - `docker-compose exec -e API_KEY=YOUR_API_KEY tools bash`
 - Now, using your API key, run the script to export dashboards into `dashboards.json` in the current directory:
-  - `export API_KEY=YOUR_API_KEY`
   - `/mnt/bin/manage-dashboards.py --export --api-key ${API_KEY} > /mnt/dashboards.json`
   - If you get an HTTP 401 error, it means your API key was invalid.
 - Exit the container and move the `dashboards.json` file into the `config/` directory:
