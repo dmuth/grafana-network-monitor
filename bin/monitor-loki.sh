@@ -14,9 +14,10 @@ DIR_DATA="${DIR}/loki-data"
 DIR_WAL="${DIR}/loki-wal"
 
 
-ls -l ${DIR_DATA}/chunks | wc -l; echo
-find ${DIR_DATA} -type f | head | xargs ls -lh; echo
-find ${DIR_WAL} -type f | head | xargs ls -lh
+echo "Num chunks: $(ls -l ${DIR_DATA}/chunks | wc -l)"
+echo
+ls -ltrh ${DIR_DATA}/chunks | tail 
+ls -ltrh ${DIR_WAL} | tail
 
 
 
