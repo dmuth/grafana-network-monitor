@@ -22,9 +22,12 @@ services:
     build:
       context: docker/tools
       dockerfile: "Dockerfile"
+    environment:
+      DOCKER: 1
     volumes:
       - .:/mnt
       - logs:/logs/
+      - ./data/loki-wal:/data/wal
     restart: "always"
 
   #
