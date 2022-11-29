@@ -21,8 +21,14 @@ ingester:
     # I used to have this at 1 minute, but it was creating an insane amount of files
     # which caused other performance problems.  Feel free to tweak this.
     #
-    #checkpoint_duration: 5m
     checkpoint_duration: 1h
+    #checkpoint_duration: 5m
+
+    #
+    # Enable this or else you're gonna get data loss. ;-)
+    #
+    flush_on_shutdown: true
+
   lifecycler:
     address: 127.0.0.1
     ring:
@@ -32,11 +38,14 @@ ingester:
     final_sleep: 0s
     # Set this to allow faster startup
     min_ready_duration: 5s
-  #chunk_idle_period: 1h       # Any chunk not receiving new logs in this time will be flushed
-  #max_chunk_age: 1h           # All chunks will be flushed when they hit this age, default is 1h
-  chunk_idle_period: 5m
-  max_chunk_age: 5m
-  chunk_target_size: 1048576  # Loki will attempt to build chunks up to 1.5MB, flushing first if chunk_idle_period or max_chunk_age is reached first
+
+  # All chunks will be flushed when they hit this age
+  max_chunk_age: 1h
+  chunk_idle_period: 1h
+
+  # How big are the chunks?
+  chunk_target_size: 10485760
+
   chunk_retain_period: 30s    # Must be greater than index read cache TTL if using an index cache (Default index read cache TTL is 5m)
   max_transfer_retries: 0     # Chunk transfers disabled
 
