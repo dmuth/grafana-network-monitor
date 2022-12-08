@@ -39,9 +39,12 @@ ingester:
     # Set this to allow faster startup
     min_ready_duration: 5s
 
+  #
   # All chunks will be flushed when they hit this age
-  max_chunk_age: 1h
-  chunk_idle_period: 1h
+  # I set this to three hours to keep from having the disk filled up.
+  #
+  max_chunk_age: 3h
+  chunk_idle_period: 3h
 
   # How big are the chunks?
   chunk_target_size: 10485760
