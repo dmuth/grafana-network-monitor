@@ -54,8 +54,8 @@ Yeah, so you loaded the dashboard, and it's showing the results of pinging multi
 - Copy `docker-compose.override.yml.sample` to `docker-compose.override.yml`.
 - Uncomment the `environment:` and `HOSTS:` keys.
 - Add additional hosts or IPs into `HOSTS:` as you see fit.
-- Restart the `ping` container with?:
-  -  `docker-compose kill ping; docker-compose rm -f ping; docker-compose up -d ping`.
+- Restart the `ping` container with:
+  -  `./bin/reload-ping.sh`.
 - Current hosts being pinged can be inspected with this command:
   - `docker inspect grafana-network-monitor-ping-1 | jq .[].Config.Env`
 
