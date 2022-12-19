@@ -37,15 +37,18 @@ The major pieces of this project are:
 
 ## Viewing Dashboards
 
-### The Ping dashboard
-
-Look, just start with the ping dashboard, okay?
-
 - [Ping Results](http://localhost:3000/d/WiThvuS7z/ping-results) - Shows ping time and packet loss for specified hosts.  The hosts can be changed.
   - Additionally, any hostname (as defined in `hosts.txt`) that starts with `internal-` will be excluded from the aggregate ping dashbaord.  This makes tracking Internet outages easier.
-- [Ping Results - Internval vs External](http://localhost:3000/d/KfLZ8yvVk/ping-results-internal-vs-external) - 
+- [Ping Results - Internval vs External](http://localhost:3000/d/KfLZ8yvVk/ping-results-internal-vs-external) - A breakdown of packet loss by Internal vs External hosts.
+- [Ping Results - Internal vs Upstream vs External](http://localhost:3000/d/BXSaiQcVz/ping-results-internal-vs-upstream-vs-external) - A breakdown of packet loss by Internal, Upstream, and External hosts.
 
-Yeah, so you loaded the dashboard, and it's showing the results of pinging multiple hosts on the Internet (round-trip time and packet loss) on a dashboard that gets updated every 5 seconds!  Neat, huh?
+### Internal, Upstream, and External Hosts Explained
+
+- Internal hosts start with `internal-`, and are hosts that are on your LAN.  Laptops, tablets, cameras, etc.  Packet loss to some/all of these devices is expected.
+- Upstream hosts - Hosts that start with `upstream-` are in your ISP's network on the other side of your modem.  You can find these IPs with a `traceroute` command.
+- External hosts - All other hosts.  These would be hosts like Amazon.com, 8.8.8.8, etc.
+
+Yeah, so you loaded the dashboards, and they're showing the results of pinging multiple hosts on the Internet (round-trip time and packet loss) on a dashboard that gets updated every 5 seconds!  Neat, huh?
 
 
 ## Pinging Additional Hosts
