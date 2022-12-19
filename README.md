@@ -57,7 +57,7 @@ Yeah, so you loaded the dashboard, and it's showing the results of pinging multi
 - Restart the `ping` container with:
   -  `./bin/reload-ping.sh`.
 - Current hosts being pinged can be inspected with this command:
-  - `docker inspect grafana-network-monitor-ping-1 | jq .[].Config.Env`
+  - `docker inspect $(docker ps |grep grafana |grep ping | awk '{print $1}') | jq .[].Config.Env`
 
 
 ## Exporting Dashboards
