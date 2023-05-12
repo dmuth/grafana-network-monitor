@@ -58,6 +58,11 @@ services:
   #
   promtail:
     image: grafana/promtail:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: "10m"
     volumes:
       - logs:/logs/
       - ./config:/mnt/config
@@ -75,6 +80,11 @@ services:
   loki:
     image: grafana/loki:latest
     user: root
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: "10m"
     volumes:
       - ./config:/mnt/config
       - ./data/loki-data:/tmp/loki
@@ -90,6 +100,11 @@ services:
   #
   grafana:
     image: grafana/grafana:latest
+    logging:
+      driver: "json-file"
+      options:
+        max-file: 5
+        max-size: "10m"
     #
     # Not thrilled with having to run as root in the container, but trying
     # to run this in a Linux VM as a non-root user has permission issues, 
