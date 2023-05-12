@@ -61,7 +61,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-file: 5
+        max-file: "5"
         max-size: "10m"
     volumes:
       - logs:/logs/
@@ -83,7 +83,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-file: 5
+        max-file: "5"
         max-size: "10m"
     volumes:
       - ./config:/mnt/config
@@ -103,7 +103,7 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-file: 5
+        max-file: "5"
         max-size: "10m"
     #
     # Not thrilled with having to run as root in the container, but trying
