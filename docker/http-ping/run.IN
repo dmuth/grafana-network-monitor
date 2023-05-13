@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# This script runs our http-request script with service-specific arguments.
+#
+
+#
+# Change to the directory of this service.
+#
+cd $(dirname $0)
+
+#
+# Rotate the old logfile.  We do this in case promtail isn't finished reading it.
+#
+mv -f %LOG% %LOG%.OLD || true
+
+#
+# Run our script and pipe the output into a logfile
+#
+# tai64n prepends a nanosecond time and tai64nlocal turns it into human-readable UTC time.
+#
+/http-request.py %URL% %INTERVAL% %TIMEOUT_CONNECT% %TIMEOUT_CONTENT% 2>&1 | tai64n | tai64nlocal >> %LOG%
+
+

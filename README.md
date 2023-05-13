@@ -10,6 +10,7 @@ The major pieces of this project are:
 - Grafana, for graphing
 - Loki, for storing time series logs
 - `ping`, a container which pings multiple hosts
+- `http-ping`, a container which retrieves multiple URLs
 - A Docker container called `logs`, which automatically generates synthetic log entries.
 - Promtail, for reading in the generated logs, output of `ping`, as well as the contents of `/var/log/`. All logs are sent off to loki.
 
@@ -24,7 +25,8 @@ The major pieces of this project are:
 - [Create an API user with Admin access](http://localhost:3000/org/apikeys)
 - Import the dashboards and data source for Loki by running a script within a container
 - Spawn a shell in the `tools` container and import the dashboards and data sources into Grafana
-  - `docker-compose exec -e API_KEY=YOUR_API_KEY tools /mnt/bin/import.sh`
+  - `API_KEY=YOUR_API_KEY ./bin/docker-tools-with-api-key.sh`
+  - Then, from within the container: `/mnt/bin/import.sh`
 - At this point, your Data Source (Loki) and Dashboards have been loaded, with the latter available at http://localhost:3000/dashboards.
 
 
@@ -41,6 +43,8 @@ The major pieces of this project are:
   - Additionally, any hostname (as defined in `hosts.txt`) that starts with `internal-` will be excluded from the aggregate ping dashbaord.  This makes tracking Internet outages easier.
 - [Ping Results - Internval vs External](http://localhost:3000/d/KfLZ8yvVk/ping-results-internal-vs-external) - A breakdown of packet loss by Internal vs External hosts.
 - [Ping Results - Internal vs Upstream vs External](http://localhost:3000/d/BXSaiQcVz/ping-results-internal-vs-upstream-vs-external) - A breakdown of packet loss by Internal, Upstream, and External hosts.
+- [HTTP Ping Results](http://localhost:3000/d/tVWgvc8Vz/http-ping) - A breakdown of HTTP ping requests, by URL, Status, and Error.
+
 
 ### Internal, Upstream, and External Hosts Explained
 
@@ -58,20 +62,31 @@ Yeah, so you loaded the dashboards, and they're showing the results of pinging m
 - Uncomment the `environment:` and `HOSTS:` keys.
 - Add additional hosts or IPs into `HOSTS:` as you see fit.
 - Restart the `ping` container with:
-  -  `./bin/reload-ping.sh`.
+  - `./bin/docker-build-and-run.sh ping`
 - Current hosts being pinged can be inspected with this command:
   - `docker inspect $(docker ps |grep grafana |grep ping | awk '{print $1}') | jq .[].Config.Env`
+
+
+## HTTP Pinging Additional Hosts
+
+- Copy `docker-compose.override.yml.sample` to `docker-compose.override.yml`.
+- Uncomment the `environment:` and `HOSTS:` keys.
+- Add additional URLs into `URLS:` as you see fit.
+  - I **strongly** recommend against pinging any URL more than once every 10 seconds.
+  - Also, please be considerate with what endpoints you ping.  If an endpoint takes more than a second to return data, it's probably an expensive endpoint, and you may want to consider pinging a different endpoint.
+- Restart the `http-ping` container with:
+  - `./bin/docker-build-and-run.sh http-ping`
+- Current URLs being pinged can be inspected with this command:
+  - `docker inspect $(docker ps |grep grafana |grep http-ping | awk '{print $1}') | jq .[].Config.Env`
 
 
 ## Exporting Dashboards
 
 - If you want to export your current set of dashboards (including any changes made) to disk, first you'll need launch a shell in the tools container:
-  - `docker-compose exec -e API_KEY=YOUR_API_KEY tools bash`
-- Now, using your API key, run the script to export dashboards into `dashboards.json` in the current directory:
-  - `/mnt/bin/manage-dashboards.py --export --api-key ${API_KEY} > /mnt/dashboards.json`
-  - If you get an HTTP 401 error, it means your API key was invalid.
-- Exit the container and move the `dashboards.json` file into the `config/` directory:
-  - `mv dashboards.json config/dashboards.json`
+  - `API_KEY=YOUR_API_KEY ./bin/docker-tools-with-api-key.sh`
+  - Then, from within the container:
+     - `/mnt/bin/manage-dashboards.py --export --api-key ${API_KEY} > /mnt/config/dashboards.json`
+     - If you get an HTTP 401 error, it means your API key was invalid.
 
 
 ## Running Ad-hoc Queries
@@ -112,7 +127,8 @@ If you want to query Loki directly, I write a command-line script for that:
 
 ## List of Docker Containers and Their Functions
 
-- `ping` - Pings one or more hosts continuously and writes the results to logfiles in a Docker voluem
+- `ping` - Pings one or more hosts continuously and writes the results to logfiles in a Docker volume
+- `http-ping` - Similar to `ping`, but requests URLs over and over.
 - `grafana` - Grafana instance.
 - `logs` - Container to make fake logs for testing Loki.
 - `loki` - Loki instance.
@@ -161,10 +177,10 @@ A2: The previous answer was back from when I was sending my logs to Prometheus, 
 
 ## Development
 
-- Working on the `logs` container
-  - `docker-compose kill logs; docker-compose rm -f logs; docker-compose build logs && docker-compose up logs`
-- Working on the `promtail` container
-  - `docker-compose kill promtail; docker-compose rm -f promtail; docker-compose build promtail && docker-compose up promtail`
+- If you need to build a container and spawn a bash shell inside of it:
+  - `./bin/docker-build-and-exec-bash.sh IMAGE_NAME`
+- If you need to just rebuild and restart a container:
+  - `./bin/docker-build-and-run.sh IMAGE_NAME`
 - Updating Dashboards
   - See the `Exporting Dashboards` and `Getting Started` sections above
 

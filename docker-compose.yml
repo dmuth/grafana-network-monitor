@@ -39,7 +39,7 @@ services:
       dockerfile: "Dockerfile"
     environment:
       #
-      # Host to ping.  Can be hostname or IP.  Space-delimited.
+      # Hosts to ping.  Can be hostname or IP.  Space-delimited.
       # Note that DNS lookups may fail, so consider pinging some IPs...
       #
       HOSTS: "google.com amazon.com google-dns cloudflare-dns "
@@ -49,6 +49,35 @@ services:
       #
       #HOSTS: "google.com amazon.com google-dns cloudflare-dns cheetah.jp leopard.se"
     volumes:
+      - logs:/logs/
+      - ./hosts.txt:/etc/hosts
+    restart: "always"
+
+  #
+  # Container to issue HTTP requests
+  #
+  http-ping:
+    build:
+      context: docker/http-ping
+      dockerfile: "Dockerfile"
+    environment:
+      #
+      # URLs to query.  Space-delimited.
+      # Format is: URL,interval,connect_timeout,content_timeout
+      # Default interval, connect, and content timeouts are 10 seconds.
+      #
+      # Some sample URLs to force different kinds of errors:
+      #
+      # https://httpbin.dmuth.org/status/xxx - Return the specified status code
+      # https://httpbin.dmuth/org/delay/n - Return after a delay of n seconds
+      # http://localhost:12345/ - Connection Refused
+      # http://localhost.invalid/ - DNS Lookup failure
+      # http://10.255.255.254 - Timeout
+      # http://10.255.255.255 - Network unreachable
+      # 
+      URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/204"
+    volumes:
+      - .:/mnt
       - logs:/logs/
       - ./hosts.txt:/etc/hosts
     restart: "always"
