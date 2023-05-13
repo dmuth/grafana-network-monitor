@@ -14,6 +14,36 @@ services:
     environment:
       HOSTS: "google.com amazon.com google-dns-4 google-dns-8 quad9-dns internal-192-168-1-1 internal-10-0-0-1"
 
+  http-ping:
+    environment:
+      #
+      # URLs to query.  Space-delimited.
+      # Format is: URL,interval,connect_timeout,content_timeout
+      #
+      # Default interval, connect, and content timeouts are 10 seconds.
+      #
+      #
+      # Some sample URLs to force different kinds of errors:
+      #
+      # https://httpbin.dmuth.org/status/xxx - Return the specified status code
+      # https://httpbin.dmuth/org/delay/n - Return after a delay of n seconds
+      # http://localhost:12345/ - Connection Refused
+      # http://localhost.invalid/ - DNS Lookup failure
+      # http://10.255.255.254 - Timeout
+      # http://10.255.255.255 - Network unreachable
+      #
+      URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/202"
 
+      # Various HTTP status codes
+      #URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/robots.txt https://httpbin.dmuth.org/status/101 https://httpbin.dmuth.org/status/202 https://httpbin.dmuth.org/status/301 https://httpbin.dmuth.org/status/303 https://httpbin.dmuth.org/status/404 https://httpbin.dmuth.org/status/505 https://httpbin.dmuth.org/status/599"
+
+      # Delays
+      #URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/robots.txt https://www.cnn.com/robots.txt https://httpbin.dmuth.org/delay/0,1 https://httpbin.dmuth.org/delay/1,1 https://httpbin.dmuth.org/delay/2,1 https://httpbin.dmuth.org/delay/3,1 https://httpbin.dmuth.org/delay/4,1 https://httpbin.dmuth.org/delay/5,1"
+
+      # Random HTTP status codes
+      #URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/200%2C201%2C202%2C203%2C204"
+
+      # Test the different error and timeout conditions.
+      #URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/202 http://localhost:12345/ http://localhost.invalid/ http://10.255.255.254 http://10.255.255.255"
 
 

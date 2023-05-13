@@ -54,7 +54,6 @@ scrape_configs:
             format: UnixDate
             source: timestamp
 
-
 - job_name: ping
   static_configs:
     - targets:
@@ -73,6 +72,32 @@ scrape_configs:
             expression: 'target=(?P<target>([^ ]+)) '
         - labels:
             target: target
+        - timestamp:
+            source: timestamp
+            #
+            # This is a custom format
+            #
+            format: "2006-01-02 15:04:05.999999999"
+                    
+
+- job_name: http-ping
+  static_configs:
+    - targets:
+        - localhost
+      labels:
+        job: logs-http-ping
+        __path__: /logs/http-ping/*.log
+
+  pipeline_stages:
+  - match:
+      selector: '{job="logs-http-ping"}'
+      stages:
+        - regex:
+            expression: '(?P<timestamp>(\d+-\d+-\d+ \d+:\d+:\d+\.\d+))' 
+        - regex:
+            expression: 'url="(?P<url>([^"]+))" '
+        - labels:
+            url: url
         - timestamp:
             source: timestamp
             #
