@@ -32,7 +32,7 @@ services:
       # http://10.255.255.254 - Timeout
       # http://10.255.255.255 - Network unreachable
       #
-      URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/202"
+      URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/201_202_203_204_205"
 
       # Various HTTP status codes
       #URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/robots.txt https://httpbin.dmuth.org/status/101 https://httpbin.dmuth.org/status/202 https://httpbin.dmuth.org/status/301 https://httpbin.dmuth.org/status/303 https://httpbin.dmuth.org/status/404 https://httpbin.dmuth.org/status/505 https://httpbin.dmuth.org/status/599"

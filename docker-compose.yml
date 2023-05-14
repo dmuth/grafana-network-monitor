@@ -75,6 +75,8 @@ services:
       # http://10.255.255.254 - Timeout
       # http://10.255.255.255 - Network unreachable
       # 
+      # More interesting URLs can be found in docker-compose.override.yml
+      #
       URLS: "https://www.google.com/robots.txt https://httpbin.dmuth.org/status/204"
     volumes:
       - .:/mnt
