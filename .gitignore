@@ -9,7 +9,7 @@
 #
 # Don't include Promtail's offset tracking files.
 #
-data/promtail/*.yaml
+data/promtail/*
 
 #
 # Don't include Loki's database.
