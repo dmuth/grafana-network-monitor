@@ -7,4 +7,3 @@ COPY populate-logs.sh /
 COPY entrypoint.sh /
 
 ENTRYPOINT [ "/entrypoint.sh" ]
-
